@@ -1,0 +1,28 @@
+{
+  "name": "emergency-contacts",
+  "version": "1.0.0",
+  "description": "Emergency Contact WebSvc",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "lint": "./node_modules/.bin/standard --fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markells/emergency_contact.git"
+  },
+  "author": "Mark Ellsworth",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@byu-oit/byuapi": "0.0.13",
+    "aws-param-store": "^2.1.0",
+    "byu-jwt": "^1.0.10",
+    "express": "^4.16.4",
+    "mysql": "^2.16.0",
+    "sync-mysql": "^3.0.1"
+  },
+  "devDependencies": {
+    "request": "^2.88.0"
+  }
+}

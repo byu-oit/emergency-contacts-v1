@@ -1,0 +1,37 @@
+version: 1
+
+name: emergency-contacts-API
+
+tags:
+  team: AD-Identity and Access Management
+  data-sensitivity: confidential
+
+environments:
+  dev:
+    webapp:
+      type: beanstalk
+      path_to_code: .
+      solution_stack: 64bit Amazon Linux 2018.03 v4.5.4 running Node.js
+      health_check_url: /healthcheck
+      routing:
+        type: https
+        https_certificate: c4a82252-b609-4f7c-aae8-83777377a0fd
+        dns_names:
+        - econtacts.sim-dev.byu.edu
+      environment_variables:
+        PORT: 8081
+        NODE_ENV: development
+  prd:
+    webapp:
+      type: beanstalk
+      path_to_code: .
+      solution_stack: 64bit Amazon Linux 2018.03 v4.5.4 running Node.js
+      health_check_url: /healthcheck
+      routing:
+        type: https
+        https_certificate: findoutwhatgoeshere
+        dns_names:
+        - idunno.byu.edu
+      environment_variables:
+        PORT: 8081
+        NODE_ENV: production

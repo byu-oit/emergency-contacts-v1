@@ -1,0 +1,285 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "v1",
+    "title": "EmergencyContact-WebService-API",
+    "description": "Stand-afar Emergency Contact Service",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "api.byu.edu",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "paths": {
+    "/contacts/relations": {
+      "x-controller": "econtactws",
+      "get": {
+        "description": "Get the list of relation-to-principal types",
+        "operationId": "GetRelationList",
+        "responses": {
+          "200": {
+            "description": "Successful Query",
+            "schema": {
+              "title": "relation_type_list",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/relation"
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Service Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/{byu_id}/contacts": {
+      "x-controller": "econtactws",
+      "get": {
+        "description": "Get the list of contacts associated with a principal",
+        "operationId": "GetContactList",
+        "parameters": [
+          {
+            "name": "byu_id",
+            "in": "path",
+            "description": "the byu_id of principal for a list of contacts",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Query",
+            "schema": {
+              "title": "contact_list",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/contact"
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Service Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Inserts a Contact",
+        "operationId": "InsertContact",
+        "parameters": [
+          {
+            "name": "byu_id",
+            "in": "path",
+            "description": "the BYU_ID of the principal who provides this contact",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "contact_entry",
+            "in": "body",
+            "description": "content of a contact",
+            "schema": {
+              "$ref": "#/definitions/contact"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully added",
+            "schema": {
+              "$ref": "#/definitions/contact"
+            }
+          },
+          "400": {
+            "description": "Error in request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "An error occured in the server",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Updates a Contact",
+        "operationId": "UpdateContact",
+        "parameters": [
+          {
+            "name": "byu_id",
+            "in": "path",
+            "description": "the BYU-ID of the Contact's Principal",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "sequence_no",
+            "in": "path",
+            "description": "Sequence number of a particular contact",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "contact_entry",
+            "in": "body",
+            "description": "content of a contact",
+            "schema": {
+              "$ref": "#/definitions/contact"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Update",
+            "schema": {
+              "$ref": "#/definitions/contact"
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Service Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/{byu_id}/contacts/{sequence_no}": {
+      "x-controller": "econtactws",
+      "delete": {
+        "description": "Deletes a Contact",
+        "operationId": "DeleteContact",
+        "parameters": [
+          {
+            "name": "byu_id",
+            "in": "path",
+            "description": "the BYU-ID of the Contact's Principal",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "sequence_no",
+            "in": "path",
+            "description": "the ID of t",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Deletion",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Service Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "relation": {
+      "properties": {
+        "relation_type": {
+          "type": "string"
+        },
+        "relation_type_id": {
+          "type": "integer"
+        }
+      }
+    },
+    "contact": {
+      "required": [
+        "byu_id",
+        "sequence_no",
+        "name",
+        "email",
+        "phone",
+        "relation_type"
+      ],
+      "properties": {
+        "byu_id": {
+          "type": "string"
+        },
+        "sequence_no": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "relation_type": {
+          "type": "string"
+        },
+        "address1": {
+          "type": "string"
+        },
+        "address2": {
+          "type": "string"
+        },
+        "address3": {
+          "type": "string"
+        },
+        "address4": {
+          "type": "string"
+        },
+        "address5": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

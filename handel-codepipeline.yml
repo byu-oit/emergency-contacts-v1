@@ -1,0 +1,41 @@
+version: 1
+
+name: emergency-contacts-API
+
+pipelines:
+  dev:
+    phases:
+    - type: github
+      name: GitHub
+      owner: byu-oit
+      repo: econtacts
+      branch: master
+    - type: codebuild
+      name: CodeBuild
+      build_image: node:8
+    - type: handel
+      name: DevDeploy
+      environments_to_deploy:
+      - dev
+#    - type: slack_notify
+#      name: Notify
+#      channel: '#cesgi-notifications'
+#      message: 'Finished deploying admissions-dce-client to dev'
+  prd:
+    phases:
+    - type: github
+      name: GitHub
+      owner: byu-oit
+      repo: econtacts
+      branch: release
+    - type: codebuild
+      name: CodeBuild
+      build_image: node:8
+    - type: handel
+      name: PrdDeploy
+      environments_to_deploy:
+      - prd
+#    - type: slack_notify
+#      name: Notify
+#      channel: '#cesgi-notifications'
+#      message: 'Finished deploying admissions-dce-client to prd'
