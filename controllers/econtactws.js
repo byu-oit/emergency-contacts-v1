@@ -13,12 +13,12 @@ module.exports =
 
 const cont     = require("./contacts" );
 const prin     = require("./principal");
-//const jfactory = require("byu-jwt"    );
-//const express  = require("express"    );
-//const app      = express();
-//const jwt      = jfactory(); // parameters need to be added here
+const jfactory = require("byu-jwt"    );
+const express  = require("express"    );
+const app      = express();
+const jwt      = jfactory(); // parameters need to be added here
 
-//app.use(jwt.authenticateUAPIMiddleware);
+app.use(jwt.authenticateUAPIMiddleware);
 
 
 function ShowItems(label, list)

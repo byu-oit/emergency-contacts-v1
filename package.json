@@ -10,15 +10,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/markells/emergency_contact.git"
+    "url": "git+https://github.com/byu-oit/emergency-contacts-v1"
   },
   "author": "Mark Ellsworth",
   "license": "Apache-2.0",
   "dependencies": {
     "@byu-oit/byuapi": "0.0.13",
     "aws-param-store": "^2.1.0",
+    "aws-sdk": "^2.441.0",
     "byu-jwt": "^1.0.10",
     "express": "^4.16.4",
+    "js-yaml": "^3.13.1",
     "mysql": "^2.16.0",
     "sync-mysql": "^3.0.1"
   },

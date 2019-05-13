@@ -27,7 +27,7 @@ app.use(expressTranslator(api));
 
 let port = process.env.PORT || 9072;
 
-function listen_result()
+function listen_report()
 {
   console.log('Beginning Emergency Contact Service');
   console.log('   [INFO] port: ' + port);
@@ -35,4 +35,4 @@ function listen_result()
   console.log('   [INFO] swag: ' + path.resolve(__dirname, './swagger.json'));
 }
 
-app.listen(port, listen_result);
+app.listen(port, listen_report);
