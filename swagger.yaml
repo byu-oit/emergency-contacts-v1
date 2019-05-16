@@ -95,6 +95,10 @@ paths:
           schema:
             type: string
 
+            
+  '/{byu_id}/contacts/{sequence_no}':
+    x-controller: econtactws
+    
     put:
       description: Updates a Contact
       operationId: UpdateContact
@@ -127,10 +131,6 @@ paths:
           description: Service Error
           schema:
             type: string
-            
-  '/{byu_id}/contacts/{sequence_no}':
-    x-controller: econtactws
-    
             
     delete:
       description: Deletes a Contact
