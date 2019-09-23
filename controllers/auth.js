@@ -1,24 +1,24 @@
 'use strict'
 
 module.exports =
-{
+  {
 
-  GrantScan, // you can always read your own stuff..
-  GrantAdmin,
+    GrantScan, // you can always read your own stuff..
+    GrantAdmin,
 
-  WriteIsAuthorized,
-  ReadIsAuthorized,
+    WriteIsAuthorized,
+    ReadIsAuthorized,
 
-  MySqlReader,
-  MySqlWriter,
+    MySqlReader,
+    MySqlWriter,
 
-  TestAuth
-};
+    TestAuth
+  };
 
 let cred  = require('./cred');
 let mysql = require('sync-mysql');
 
-let reader = new mysql(cred.GetReading());  
+let reader = new mysql(cred.GetReading());
 let writer = new mysql(cred.GetWriting());
 
 
@@ -34,7 +34,7 @@ function MySqlCommand(connection, sql, params)
   }
   catch(e)
   {
-    reader = new mysql(cred.GetReading());  
+    reader = new mysql(cred.GetReading());
   }
 
   try
@@ -46,10 +46,10 @@ function MySqlCommand(connection, sql, params)
   catch(e)
   {
     let result =
-    {
-      length: 0,
-      error: e.message
-    };
+      {
+        length: 0,
+        error: e.message
+      };
 
     return result;
   }
@@ -126,10 +126,9 @@ function WriteIsAuthorized(tok, byu_id)
 
 
 function TestAuth(tok)
-{ 
+{
   return true;
 }
-
 
 
 

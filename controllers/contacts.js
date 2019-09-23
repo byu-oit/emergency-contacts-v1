@@ -1,24 +1,24 @@
 'use strict'
 
 module.exports =
-{
-  GetContactList,
-  
-  CreateContact,
-  UpdateContact,
-  DeleteContact,
+  {
+    GetContactList,
 
-  TestContact,
-};
+    CreateContact,
+    UpdateContact,
+    DeleteContact,
+
+    TestContact,
+  };
 
 let auth  = require('./auth');
 let prin  = require('./principal');
 
 
 let empty_response =
-{
-  "length": 0,
-};
+  {
+    "length": 0,
+  };
 
 
 
@@ -33,13 +33,13 @@ function GetContactList(tok, byu_id)
   if(p.length < 1) return empty_response;
 
   let qsql = "select principal_id, sequence_no, relation_type, name, phone, email, address1, address2, address3, address4, address5 " +
-             "from join_contacts "   +
-             "where principal_id = ?";
+    "from join_contacts "   +
+    "where principal_id = ?";
 
   let pid = p[0].principal_id;
-             
+
   let result = auth.MySqlReader(qsql, [ pid ] );
-  
+
   return result;
 }
 
@@ -66,7 +66,7 @@ function iGetContactID(sequence_no)
 
 function iHasValue(field)
 {
-  if(field == null   ) return false; 
+  if(field == null   ) return false;
   if(field.length < 1) return false;
 
   return true;
@@ -79,22 +79,22 @@ function iHasValue(field)
 function iCountMeansOfCommunication(tok, contact)
 {
   let result =
-  {
-    principal_id : tok.principal_id,
-    contact_id   : 0,
+    {
+      principal_id : tok.principal_id,
+      contact_id   : 0,
 
-    relation_id  : 0,
-    name         : contact.name,
-    phone        : contact.phone,
-    email        : contact.email,
-    address1     : contact.address1,
-    address2     : contact.address2,
-    address3     : contact.address3,
-    address4     : contact.address4,
-    address5     : contact.address5,
+      relation_id  : 0,
+      name         : contact.name,
+      phone        : contact.phone,
+      email        : contact.email,
+      address1     : contact.address1,
+      address2     : contact.address2,
+      address3     : contact.address3,
+      address4     : contact.address4,
+      address5     : contact.address5,
 
-    means        : 0
-  };
+      means        : 0
+    };
 
   let means = 0;
 
@@ -121,27 +121,27 @@ function iCountMeansOfCommunication(tok, contact)
 function CreateContact(tok, _contact) // no other user beside caller may create a user's contact
 {
   if(!auth.WriteIsAuthorized(tok, _contact.byu_id)) return 0;
- 
+
   let contact = iCountMeansOfCommunication(tok, _contact);
 
   if(contact.means < 0x20) return 0; // phone or email is required, addresses optional
 
   let isql = "insert into contacts(principal_id, relation_type_enum_id, name, phone, email, address1, address2, address3, address4, address5)" +
-             " values(?,?,?,?,?,?,?,?,?,?)";
+    " values(?,?,?,?,?,?,?,?,?,?)";
 
-  let sql_params = 
-  [ 
-    tok.principal_id, 
-    contact.relation_id, 
-    contact.name,
-    contact.phone, 
-    contact.email, 
-    contact.address1, 
-    contact.address2, 
-    contact.address3, 
-    contact.address4, 
-    contact.address5 
-  ];
+  let sql_params =
+    [
+      tok.principal_id,
+      contact.relation_id,
+      contact.name,
+      contact.phone,
+      contact.email,
+      contact.address1,
+      contact.address2,
+      contact.address3,
+      contact.address4,
+      contact.address5
+    ];
 
   let result = auth.MySqlWriter(isql, sql_params);
 
@@ -161,31 +161,31 @@ function UpdateContact(tok, _contact)
 
   if(contact.contact_id == 0 || contact.means == 0) return false;
 
-  let usql = "update contacts set         " + 
-             "  name                  = ?," + 
-             "  email                 = ?," +
-             "  phone                 = ?," +
-             "  relation_type_enum_id = ?," +
-             "  address1              = ?," +
-             "  address2              = ?," +
-             "  address3              = ?," +
-             "  address4              = ?," +
-             "  address5              = ? " +
-             "where contact_id        = ? " ;
+  let usql = "update contacts set         " +
+    "  name                  = ?," +
+    "  email                 = ?," +
+    "  phone                 = ?," +
+    "  relation_type_enum_id = ?," +
+    "  address1              = ?," +
+    "  address2              = ?," +
+    "  address3              = ?," +
+    "  address4              = ?," +
+    "  address5              = ? " +
+    "where contact_id        = ? " ;
 
   let params =
-  [
-    contact.name,
-    contact.email,
-    contact.phone,
-    contact.relation_id,
-    contact.address1,
-    contact.address2,
-    contact.address3,
-    contact.address4,
-    contact.address5,
-    contact.contact_id
-  ];
+    [
+      contact.name,
+      contact.email,
+      contact.phone,
+      contact.relation_id,
+      contact.address1,
+      contact.address2,
+      contact.address3,
+      contact.address4,
+      contact.address5,
+      contact.contact_id
+    ];
 
   let result = auth.MySqlWriter(usql, params );
 
@@ -227,7 +227,7 @@ function iGetSequenceNo(tok, byu_id, contact_name) // not exported, used for tes
   }
 
   let gsql = "select contact_id from contacts where principal_id = ? and name = ?";
- 
+
   let result = auth.MySqlReader(gsql, [ pid, contact_name]);
 
   if(result.length) return result[0].contact_id;
@@ -236,45 +236,45 @@ function iGetSequenceNo(tok, byu_id, contact_name) // not exported, used for tes
 }
 
 
-//    T E S T        T E S T        T E S T        T E S T        T E S T        T E S T        T E S T        T E S T    
+//    T E S T        T E S T        T E S T        T E S T        T E S T        T E S T        T E S T        T E S T
 
 
 
 
 
 let contact_new =
-{
-  byu_id       : "x",
-  sequence_no  : 0,
-  name         : "Lauren Frederiksen",
-  relation_type: "Child",
-  phone        : "(248)420-5820",
-  email        : "laurenells1@gmail.com",
-  address1     : "2944 Burnham",
-  address2     : null,
-  address3     : null,
-  address4     : "89169",
-  address5     : "USA"
-};
+  {
+    byu_id       : "x",
+    sequence_no  : 0,
+    name         : "Lauren Frederiksen",
+    relation_type: "Child",
+    phone        : "(248)420-5820",
+    email        : "laurenells1@gmail.com",
+    address1     : "2944 Burnham",
+    address2     : null,
+    address3     : null,
+    address4     : "89169",
+    address5     : "USA"
+  };
 
 let contact_mod =
-{
-  byu_id       : "x",
-  sequence_no  : 0,
-  name         : "Lauren Frederiksen",
-  relation_type: "Child",
-  phone        : "(248)420-5820",
-  email        : "laurenells1@gmail.com",
-  address1     : "2944 Burnham",
-  address2     : "LasVegas",
-  address3     : "NV",
-  address4     : "89169",
-  address5     : "USA"
-};
+  {
+    byu_id       : "x",
+    sequence_no  : 0,
+    name         : "Lauren Frederiksen",
+    relation_type: "Child",
+    phone        : "(248)420-5820",
+    email        : "laurenells1@gmail.com",
+    address1     : "2944 Burnham",
+    address2     : "LasVegas",
+    address3     : "NV",
+    address4     : "89169",
+    address5     : "USA"
+  };
 
 
 
- 
+
 function TestGetContacts(tok, byu_id)
 {
   let contacts = GetContactList(tok, byu_id);
@@ -360,14 +360,13 @@ function TestContact(tok)
 
   if(seq_no == 0) seq_no = iGetSequenceNo(tok, mybyu, "Lauren Frederiksen");
 
-  if(seq_no == 0) seq_no = TestNewContact(tok, mybyu); 
+  if(seq_no == 0) seq_no = TestNewContact(tok, mybyu);
 
   TestModifyContact(tok, mybyu, seq_no);
-  
+
   TestDeleteContact(tok, mybyu, seq_no);
-  
+
   TestGetContacts(tok, mybyu);
-  
+
   return true;
 }
-

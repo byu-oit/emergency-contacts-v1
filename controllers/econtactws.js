@@ -1,15 +1,15 @@
 'use strict'
 
 module.exports =
-{
-  GetRelationList,
-  GetContactList,
-  InsertContact,
-  UpdateContact,
-  DeleteContact,
+  {
+    GetRelationList,
+    GetContactList,
+    InsertContact,
+    UpdateContact,
+    DeleteContact,
 
-  TestWebAPI
-};
+    TestWebAPI
+  };
 
 const cont     = require("./contacts" );
 const prin     = require("./principal");
@@ -39,77 +39,77 @@ function ShowItems(label, list)
 
 
 let test1 =
-{
-  verifiedJWTs:
   {
-    claims:
-    {
-      byuId   : "530347213",
-      sortName: "Ellsworth, Mark G."
-    }
-  },
-  params:
-  {
-    byu_id: "530347213", // THESE ARE FOUND ON THE URI PATH
-    sequence_no: 0,
-  },
-  body:
-  {
-    byu_id       : "530347213",
-    sequence_no  : 0,
-    name         : "Lauren Frederiksen",
-    relation_type: "Child",
-    phone        : "(248)420-5820",
-    email        : "laurenells1@gmail.com",
-    address1     : "2944 Burnham",
-    address2     : null,
-    address3     : null,
-    address4     : "89169",
-    address5     : "USA"
-  }
-};
+    verifiedJWTs:
+      {
+        claims:
+          {
+            byuId   : "530347213",
+            sortName: "Ellsworth, Mark G."
+          }
+      },
+    params:
+      {
+        byu_id: "530347213", // THESE ARE FOUND ON THE URI PATH
+        sequence_no: 0,
+      },
+    body:
+      {
+        byu_id       : "530347213",
+        sequence_no  : 0,
+        name         : "Lauren Frederiksen",
+        relation_type: "Child",
+        phone        : "(248)420-5820",
+        email        : "laurenells1@gmail.com",
+        address1     : "2944 Burnham",
+        address2     : null,
+        address3     : null,
+        address4     : "89169",
+        address5     : "USA"
+      }
+  };
 
 let test2 =
-{
-  verifiedJWTs:
   {
-    claims:
-    {
-      byuId   : "530347213",
-      sortName: "Ellsworth, Mark G."
-    }
-  },
-  params:
-  {
-    byu_id: "530347213", // THESE ARE FOUND ON THE URI PATH
-    sequence_no: 33,
-  },
-  body: // FOUND IN THE BODY!
-  {
-    byu_id       : "530347213",
-    sequence_no  : 32,
-    name         : "Lauren Frederiksen",
-    relation_type: "Child",
-    phone        : "(248)420-5820",
-    email        : "laurenells1@gmail.com",
-    address1     : "2944 Burnham",
-    address2     : "LasVegas",
-    address3     : "NV",
-    address4     : "89169",
-    address5     : "USA"
-  }
-};
+    verifiedJWTs:
+      {
+        claims:
+          {
+            byuId   : "530347213",
+            sortName: "Ellsworth, Mark G."
+          }
+      },
+    params:
+      {
+        byu_id: "530347213", // THESE ARE FOUND ON THE URI PATH
+        sequence_no: 33,
+      },
+    body: // FOUND IN THE BODY!
+      {
+        byu_id       : "530347213",
+        sequence_no  : 32,
+        name         : "Lauren Frederiksen",
+        relation_type: "Child",
+        phone        : "(248)420-5820",
+        email        : "laurenells1@gmail.com",
+        address1     : "2944 Burnham",
+        address2     : "LasVegas",
+        address3     : "NV",
+        address4     : "89169",
+        address5     : "USA"
+      }
+  };
 
 
 function GetRelationList(request, response)
-{ 
+{
   let
     tok = prin.CreateAccessToken(request.verifiedJWTs.claims);
-    
+
   if(!tok.grant_scan)
   {
     if(response != null) response.status(500).send("Query refused.");
-    
+
     return;
   }
 
@@ -121,7 +121,7 @@ function GetRelationList(request, response)
 
     return;
   }
-  
+
   if(list.length)
   {
     response.status(200).send(list);
@@ -138,15 +138,15 @@ function GetRelationList(request, response)
 
 function GetContactList(request, response)
 {
-  let 
+  let
     tok = prin.CreateAccessToken(request.verifiedJWTs.claims); // alternate use client instead of claims ?
-  let 
+  let
     list = cont.GetContactList(tok, request.params.byu_id);
-    
+
   if(response == null)
   {
     ShowItems("Contacts", list);
-    
+
     return;
   }
 
@@ -166,9 +166,9 @@ function GetContactList(request, response)
 
 function InsertContact(request, response)
 {
-  let 
+  let
     tok = prin.CreateAccessToken(request.verifiedJWTs.claims); // alternate use client instead of claims ?
-  let 
+  let
     cid = cont.CreateContact(tok, request.body);
 
   if(response == null)
@@ -188,10 +188,10 @@ function InsertContact(request, response)
   if(cid)
   {
     let reply =
-    {
-      byu_id     : tok.byu_id,
-      sequence_no: cid
-    };
+      {
+        byu_id     : tok.byu_id,
+        sequence_no: cid
+      };
 
     response.status(200).send(reply);
 
@@ -207,7 +207,7 @@ function InsertContact(request, response)
 
 function UpdateContact(request, response)
 {
-  let 
+  let
     tok = prin.CreateAccessToken(request.verifiedJWTs.claims); // alternate use client instead of claims ?
   let
     bool = cont.UpdateContact(tok, request.body);
@@ -219,7 +219,7 @@ function UpdateContact(request, response)
 
     return;
   }
-    
+
   // the sequence number should also appear in the body, why do it twice ?
 
   if(bool)
@@ -238,10 +238,10 @@ function UpdateContact(request, response)
 
 function DeleteContact(request, response)
 {
-  let 
+  let
     tok = prin.CreateAccessToken(request.verifiedJWTs.claims); // alternate use client instead of claims ?
   let
-    bool = cont.DeleteContact(tok, request.params.byu_id, request.params.sequence_no); 
+    bool = cont.DeleteContact(tok, request.params.byu_id, request.params.sequence_no);
 
   if(response == null)
   {
@@ -249,7 +249,7 @@ function DeleteContact(request, response)
 
     return;
   }
-  
+
   if(result)
   {
     response.status(200).send("Delete Succeeded");
@@ -263,7 +263,7 @@ function DeleteContact(request, response)
 
 
 
-//    T E S T        T E S T        T E S T        T E S T        T E S T        T E S T        T E S T        T E S T    
+//    T E S T        T E S T        T E S T        T E S T        T E S T        T E S T        T E S T        T E S T
 
 function TestWebGetRelations()
 {
@@ -305,7 +305,6 @@ function TestWebAPI()
 
 //TestWebUpdateContact();
 }
-
 
 
 
